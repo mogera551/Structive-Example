@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Radar Chart</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "structive": "https://cdn.jsdelivr.net/gh/mogera551/Structive@latest/dist/structive.js",
+          "main"     : "./radar-chart.st.html"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <app-main></app-main>
+    <script type="module">
+      import { defineComponents, config } from "structive";
+  
+      config.enableMainWrapper = false;
+      config.enableShadowDom = false;
+      config.enableRouter = false;
+      defineComponents({ "app-main": "main"});
+    </script>
+  </body>
+</html>
