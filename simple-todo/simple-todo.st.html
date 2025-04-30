@@ -1,0 +1,26 @@
+<template>
+  <form data-bind="onsubmit:onAdd@preventDefault">
+    <input data-bind="value:newText" placeholder="Add a todo" />
+    <button>Add</button>
+  </form>
+  <ul>
+    {{ for:todos }}
+      <li>{{ todos.*.text }}, <button data-bind="onclick:onDelete">delete</button></li>
+    {{ endfor: }}
+  </ul>
+</template>
+
+<script type="module">
+export default class {
+  newText = '';
+  todos = [];
+  onAdd() {
+    if (this.newText === '') return;
+    this.todos = this.todos.concat({ text: this.newText });
+    this.newText = '';
+  }
+  onDelete(e, $1) {
+    this.todos = this.todos.toSpliced($1, 1);
+  }
+}
+</script>
