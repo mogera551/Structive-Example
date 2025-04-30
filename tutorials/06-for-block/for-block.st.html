@@ -1,6 +1,6 @@
 <template>
   {{ for:fruits }}
-    <div>{{ fruits.*.name }}</div>
+    <div>index={{ $1 }}, {{ fruits.*.name }}</div>
   {{ endfor: }}
 </template>
 

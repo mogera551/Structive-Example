@@ -1,5 +1,7 @@
 # Structive Example Collection
 
+[日本語](README.ja.md)
+
 This repository hosts a growing set of **Structive** sample projects. Every folder is an independent, runnable example that illustrates a particular pattern—tables, charts, router usage, and more.
 
 Because each sample references **structive.js** directly from an open CDN, no build step is required. All you need is a modern browser and a tiny static‑file server such as *Live Server*.
