@@ -1,0 +1,15 @@
+<template>
+  {{ for:fruits }}
+    <div>{{ fruits.*.name }}</div>
+  {{ endfor: }}
+</template>
+
+<style>
+
+</style>
+
+<script type="module">
+export default class {
+  fruits = [ { name:"apple" }, { name:"banana" }, { name:"cherry" } ];
+}
+</script>

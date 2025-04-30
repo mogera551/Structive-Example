@@ -1,0 +1,18 @@
+<template>
+  {{ for:fruits }}
+    <div><input type="text" data-bind="value:fruits.*.name"> {{ fruits.*.name }}, {{ fruits.*.ucName }}</div>
+  {{ endfor: }}
+</template>
+
+<style>
+
+</style>
+
+<script type="module">
+export default class {
+  fruits = [ { name:"apple" }, { name:"banana" }, { name:"cherry" } ];
+  get "fruits.*.ucName"() {
+    return this["fruits.*.name"].toUpperCase();
+  }
+}
+</script>

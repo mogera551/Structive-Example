@@ -1,0 +1,18 @@
+<template>
+  {{ for:fruits }}
+    <div>{{ fruits.*.name }}<button data-bind="onclick:select">select</button></div>
+  {{ endfor: }}
+</template>
+
+<style>
+
+</style>
+
+<script type="module">
+export default class {
+  fruits = [ { name:"apple" }, { name:"banana" }, { name:"cherry" } ];
+  select(e, $1) {
+    alert(`selected index = ${$1}, name = ${this["fruits.*.name"]}`);
+  }
+}
+</script>

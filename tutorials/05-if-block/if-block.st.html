@@ -1,0 +1,21 @@
+<template>
+  {{ if:state }}
+    <div>ON</div>
+  {{ else: }}
+    <div>OFF</div>
+  {{ endif: }}
+  <button data-bind="onclick:toggle">toggle</button>
+</template>
+
+<style>
+
+</style>
+
+<script type="module">
+export default class {
+  state = true;
+  toggle() {
+    this.state = !this.state;
+  }
+}
+</script>

@@ -1,0 +1,18 @@
+<template>
+  <div>{{ message }}</div>
+  <div>{{ ucMessage }}</div>
+  <div><input type="text" data-bind="value:message"></div>
+</template>
+
+<style>
+
+</style>
+
+<script type="module">
+export default class {
+  message = "Hello, world!";
+  get ucMessage() {
+    return this.message.toUpperCase();
+  }
+}
+</script>
