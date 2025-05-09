@@ -1,0 +1,81 @@
+<template>
+<div class="container">
+  <div>
+    <select data-bind="value:region">
+      <option value="">全国</option>
+      {{ for:regions }}
+      <option data-bind="value:regions.*">{{ regions.* }}</option>
+      {{ endfor: }}
+    </select>
+  </div>
+
+  <div>
+    <table class="table table-striped">
+      <colgroup>
+        <col class="col-md-4">
+        <col class="col-md-4">
+        <col class="col-md-2">
+        <col class="col-md-2">
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="text-center">都道府県名</th>
+          <th class="text-center">県庁所在地</th>
+          <th class="text-center">人口（人）</th>
+          <th class="text-center">人口比（％）</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ for:prefectures }}
+        <tr>
+          <td class="text-center">{{ prefectures.*.name }}</td>
+          <td class="text-center">{{ prefectures.*.capital }}</td>
+          <td class="text-right" data-bind="
+            class.over : prefectures.*.population|ge,5000000;
+            class.under: prefectures.*.population|lt,1000000;
+          ">{{ prefectures.*.population|locale }}</td>
+          <td class="text-right">{{ prefectures.*.shareOfPopulation|fix,2 }}</td>
+        </tr>
+        {{ endfor: }}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="text-center" colspan="2">合計</td>
+          <td class="text-right">{{ sumPopulation|locale }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+</template>
+
+<style>
+.over {
+  color: red;
+}
+
+.under {
+  color: blue;
+}
+</style>
+
+<script type="module">
+import { allPrefectures } from "prefectures";
+
+export default class {
+  regions = Array.from(new Set(allPrefectures.map(pref => pref.region)));
+  region = "";
+
+  get prefectures() {
+    return allPrefectures.filter(pref => this.region ? pref.region === this.region : true);
+  }
+  
+  get "prefectures.*.shareOfPopulation"() {
+    return this["prefectures.*.population"] / this["sumPopulation"] * 100; // 都道府県人口/人口合計 * 100
+  }
+  get sumPopulation() {
+    return this.$getAll("prefectures.*.population", []).reduce((sum, population) => sum + population, 0);
+  }
+}
+</script>
