@@ -3,14 +3,14 @@
   <header>
     <h1>Table example</h1>
     <p>A table example with filtering and sortable columns</p>
-    <input type="search" data-bind="value|trim:filterText" placeholder="Filter by name...">
+    <input type="search" data-bind="value:filterText" placeholder="Filter by name...">
   </header>
 
   <table>
     <tbody>
       <tr>
         {{ for:sortItems }}
-          <th><a href="" data-bind="onclick:selectSortItem@preventDefault">{{ sortItems.* }}</a></th>
+          <th><a href="#" data-bind="onclick:selectSortItem@preventDefault">{{ sortItems.* }}</a></th>
         {{ endfor: }}
       </tr>
       {{ if:users.length|gt,0 }}
@@ -32,7 +32,7 @@
 </template>
 
 <script type="module">
-import {allUsers} from 'users';
+import { allUsers } from 'users';
 
 const compareFn = (name, dir) => (a, b) => {
   if (a[name] < b[name]) return -1 * dir;
@@ -51,7 +51,7 @@ export default class {
   sortDir = 1;
   get users() {
     const compare = compareFn(this.sortItem.toLowerCase(), this.sortDir);
-    const filter = filterFn(this.filterText);
+    const filter = filterFn(this.filterText.trim());
     return allUsers.filter(filter).toSorted(compare);
   }
   selectSortItem(e, $1) {
