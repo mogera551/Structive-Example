@@ -1,0 +1,123 @@
+<template>
+  <div class="container">
+    <h2>お小遣い帳</h2>
+    <form data-bind="onsubmit:onAdd@preventDefault" class="mb-3">
+      <input type="date" data-bind="value:newDate" required>
+      <input type="text" data-bind="value:newDesc" placeholder="内容" required>
+      <input type="number" data-bind="value:newAmount" placeholder="金額" required>
+      <select data-bind="value:newType">
+        <option value="収入">収入</option>
+        <option value="支出">支出</option>
+      </select>
+      <button>追加</button>
+    </form>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>内容</th>
+          <th>区分</th>
+          <th>金額</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ for:items }}
+          <tr>
+            <td>{{ items.*.date }}</td>
+            <td>{{ items.*.desc }}</td>
+            <td>{{ items.*.type }}</td>
+            <td class="text-right" data-bind="
+              class.income:items.*.isIncome;
+              class.expense:items.*.isIncome|not;
+            ">{{ items.*.amount|locale }}</td>
+            <td><button data-bind="onclick:onDelete">削除</button></td>
+          </tr>
+        {{ endfor: }}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" class="text-right">収入合計</td>
+          <td class="text-right income">{{ incomeTotal|locale }}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3" class="text-right">支出合計</td>
+          <td class="text-right expense">{{ expenseTotal|locale }}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3" class="text-right">残高</td>
+          <td class="text-right">{{ balance|locale }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</template>
+
+<style>
+  td.income {
+    color: green;
+  }
+  td.expense {
+    color: red;
+  }
+  .container {
+    margin: 20px;
+    max-width: 600px;
+  }
+  .mb-3 {
+    margin-bottom: 1rem;
+  }
+  table {
+    width: 100%;
+  }
+  th, td {
+    padding: 0.5em;
+  }
+  .text-right {
+    text-align: right;
+  }
+</style>
+
+<script type="module">
+export default class {
+  items = [];
+  newDate = '';
+  newDesc = '';
+  newAmount = '';
+  newType = '収入';
+
+  get "items.*.isIncome"() {
+    return this["items.*.type"] === '収入';
+  }
+  onAdd() {
+    if (!this.newDate || !this.newDesc || !this.newAmount) return;
+    this.items = this.items.concat({
+      date: this.newDate,
+      desc: this.newDesc,
+      amount: Number(this.newAmount),
+      type: this.newType
+    });
+    this.newDate = '';
+    this.newDesc = '';
+    this.newAmount = '';
+    this.newType = '収入';
+  }
+
+  onDelete(e, $1) {
+    this.items = this.items.toSpliced($1, 1);
+  }
+
+  get incomeTotal() {
+    return this.items.filter(i => i.type === '収入').reduce((sum, i) => sum + i.amount, 0);
+  }
+  get expenseTotal() {
+    return this.items.filter(i => i.type === '支出').reduce((sum, i) => sum + i.amount, 0);
+  }
+  get balance() {
+    return this.incomeTotal - this.expenseTotal;
+  }
+}
+</script>
