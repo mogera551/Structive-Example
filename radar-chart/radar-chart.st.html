@@ -23,6 +23,9 @@
     <input name="newlabel" data-bind="value:newLabel">
     <button data-bind="onclick:onAdd@preventDefault">Add a Stat</button>
   </form>
+
+  <pre id="raw">{{ stats.json }}</pre>
+
 </template>
 
 <style>
@@ -81,6 +84,7 @@ export default class {
   ];
 
   get "stats.json"() {
+    this.$trackDependency("stats.*.value");
     return JSON.stringify(this.stats);
   }
 
